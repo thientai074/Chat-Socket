@@ -21,7 +21,7 @@
         <div class="text-xs text-slate-400 ml-16">
           {{ moment(conversation?.lastMessage?.createdAt).format("HH:mm") }}
         </div>
-        <Dropdown class="hidden sm:block ml-12 my-auto">
+        <!-- <Dropdown class="hidden sm:block ml-12 my-auto">
           <DropdownToggle
             tag="a"
             href="javascript:;"
@@ -36,7 +36,7 @@
               </DropdownItem>
             </DropdownContent>
           </DropdownMenu>
-        </Dropdown>
+        </Dropdown> -->
       </div>
       <div class="w-full truncate text-slate-500 mt-0.5">
         {{ conversation?.lastMessage?.text }}
