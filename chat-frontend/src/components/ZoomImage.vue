@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full h-full bg-[#2b2b2b] z-50">
-    <div class="flex">
+  <div class="w-full h-screen bg-[#2b2b2b]">
+    <div class="flex z-50">
       <img
         @click="conversationStore.getZoomImage(message.file.data)"
         alt="picture"
         width="760"
-        class="mx-auto py-28"
+        class="mx-auto py-28 "
         v-bind:src="`data:image/jpeg;base64,${conversationStore.imageLink}`"
       />
       <p

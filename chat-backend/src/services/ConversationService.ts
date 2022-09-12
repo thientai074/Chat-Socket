@@ -1,7 +1,8 @@
 import { Conversation } from "../models/ConversationModel";
-import { ISearchConversation } from "../models/Interface/IConversation";
-import { errResponse, okResponse, dataNotFoundResponse } from "../msg/message";
+import { IConversation, ISearchConversation } from "../models/Interface/IConversation";
+import { errResponse, okResponse, dataNotFoundResponse, failureResponse } from "../msg/message";
 import { errorUnknown } from "../utils/myVariables";
+import mongoose from "mongoose";
 
 export const saveConversationServices = async function (
   verify: string,
@@ -225,3 +226,26 @@ export const findListConversationServices = async function (
     return errResponse(err);
   }
 };
+
+export const deleteConversationServices = async function (data: IConversation) {
+  try {
+    const itemDelete = await Conversation.findOneAndDelete({
+      _id: new mongoose.Types.ObjectId(data._id)
+    })
+
+    if(itemDelete) {
+      return okResponse(itemDelete);
+    } else {
+      return failureResponse();
+    }
+
+  } catch (e: unknown) {
+    let err: string;
+    if (e instanceof Error) {
+      err = e.message;
+    } else {
+      err = errorUnknown;
+    }
+    return errResponse(err);
+  }
+}

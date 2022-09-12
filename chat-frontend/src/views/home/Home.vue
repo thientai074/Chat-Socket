@@ -1,7 +1,7 @@
 <template>
   <ZoomImage v-if="conversationStore.inZoomPicture" />
-  <div class="intro-y chat grid grid-cols-12 gap-5 mt-5">
 
+  <div class="intro-y chat grid grid-cols-12 gap-5 mt-5 z-10">
     <ChatSideMenu :socket="socket" />
     <div class="intro-y col-span-12 lg:col-span-8 2xl:col-span-9">
       <div class="chat__box box my-auto">
@@ -23,8 +23,8 @@ import SideMenu from "../../components/SideMenu.vue";
 import { onMounted } from "vue";
 import { useConversationStore } from "../../stores/conversation-store";
 import { env } from "../../utils/MyVariables";
-import ZoomImage from "../../components/ZoomImage.vue"
-import LoadingScreen from "../../components/LoadingScreen.vue"
+import ZoomImage from "../../components/ZoomImage.vue";
+import LoadingScreen from "../../components/LoadingScreen.vue";
 
 export default {
   name: "Home",
@@ -35,7 +35,7 @@ export default {
     TopBar,
     SideMenu,
     ZoomImage,
-    LoadingScreen
+    LoadingScreen,
   },
   setup() {
     // @ts-ignore
@@ -54,13 +54,12 @@ export default {
       }
     });
 
-    if(conversationStore.inZoomPicture) {
-      const element: HTMLElement | any = document.getElementById(
-        "conversation-list"
-      );
+    if (conversationStore.inZoomPicture) {
+      const element: HTMLElement | any =
+        document.getElementById("conversation-list");
       element.scrollTop = 0;
     }
-    
+
     return { socket, conversationStore };
   },
 };

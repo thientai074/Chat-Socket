@@ -232,10 +232,34 @@ export const deleteMessageServices = async function (data: IMessage) {
   try {
     const itemDelete = await Message.findOneAndDelete({
       conversationId: data.conversationId,
-      sender: data.sender,     
+      sender: data.sender,
       receiver: data.receiver,
       timeCreated: data.timeCreated,
     });
+    if (itemDelete) {
+      return okResponse(itemDelete);
+    } else {
+      return failureResponse();
+    }
+  } catch (e: unknown) {
+    let err: string;
+    if (e instanceof Error) {
+      err = e.message;
+    } else {
+      err = errorUnknown;
+    }
+    return errResponse(err);
+  }
+};
+
+export const deleteAllMessageInConversationServices = async function (
+  data: IMessage
+) {
+  try {
+    const itemDelete = await Message.deleteMany({
+      conversationId: data.conversationId,
+    });
+
     if (itemDelete) {
       return okResponse(itemDelete);
     } else {

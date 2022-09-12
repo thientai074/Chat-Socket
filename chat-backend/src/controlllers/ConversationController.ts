@@ -2,12 +2,13 @@ import {Request, Response} from "express";
 import {
     findListConversationServices,
     saveConversationServices,
+    deleteConversationServices
 } from "../services/ConversationService";
 import * as response from "../msg/message";
 import {errorUnknown} from "../utils/myVariables";
 import {authorizationServices} from "../services/AuthorizationService";
 import {errJwtNotVerify} from "../msg/message";
-import {ISearchConversation} from "../models/Interface/IConversation"
+import {IConversation, ISearchConversation} from "../models/Interface/IConversation"
 
 export const saveConversation = async function (req: Request, res: Response) {
     try {
@@ -64,5 +65,31 @@ export const findListConversation = async function (
             err = errorUnknown;
         }
         return response.err(err, res);
+    }};
+
+export const deleteConversation = async function (req: Request, res: Response) {
+    try {
+        const authorization = req.headers["authorization"];
+        if (!authorization) {
+            return errJwtNotVerify(res)
+        }
+
+        const verify = await authorizationServices(authorization);
+
+        if (verify) {
+            const item = req.body as IConversation
+            const itemService = await deleteConversationServices(item);
+            return res.json(itemService);
+        } else {
+            return errJwtNotVerify(res)
+        }
+    } catch (e: unknown) {
+        let err: string;
+        if (e instanceof Error) {
+            err = e.message;
+        } else {
+            err = errorUnknown;
+        }
+        return response.err(err, res);
     }
-};
+}
