@@ -27,9 +27,14 @@ const routes = [
   //   meta: { requiresAuth: true },
   //   children: [
   //     {
-  //       path: "/side-menu",
+  //       path: "/",
   //       name: "side-menu-page-1",
-  //       component: Home
+  //       component: Home,
+  //     },
+  //     {
+  //       path: "/chat",
+  //       name: "side-menu-page-2",
+  //       component: Home,
   //     },
   //   ],
   // },

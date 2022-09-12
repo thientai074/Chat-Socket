@@ -21,6 +21,10 @@ class MessageService {
     downloadFile(data: Message) {
         return apiClient.post("/message/download-file", data)
     }
+
+    deleteAll(data: Message) {
+        return apiClient.post("/message/delete-all", data);
+    }
 }
 
 export default new MessageService();

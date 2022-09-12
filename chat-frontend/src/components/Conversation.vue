@@ -21,7 +21,7 @@
         <div class="text-xs text-slate-400 ml-16">
           {{ moment(conversation?.lastMessage?.createdAt).format("HH:mm") }}
         </div>
-        <Dropdown class="hidden sm:block ml-24 my-auto">
+        <Dropdown class="hidden sm:block ml-12 my-auto">
           <DropdownToggle
             tag="a"
             href="javascript:;"
@@ -31,7 +31,7 @@
           </DropdownToggle>
           <DropdownMenu class="w-40">
             <DropdownContent>
-              <DropdownItem>
+              <DropdownItem @click="actionDeleteConversation(conversation)">
                 <TrashIcon class="w-4 h-4 mr-2" /> Delete
               </DropdownItem>
             </DropdownContent>
@@ -65,6 +65,10 @@ import {
   setNotificationFailedWhenGetData,
   setNotificationToastMessage,
 } from "../utils/MyFunction";
+import { Conversation } from "../types/conversation-type";
+import ConversationService from "../services/ConversationService";
+import UserService from "../services/UserService";
+import { UserInfor } from "../types/user-type";
 
 export default {
   name: "Conversation",
@@ -110,11 +114,45 @@ export default {
       element.scrollTop = element.scrollHeight;
     }
 
+    async function actionDeleteAllMessageInConversation(conversation) {
+      const data = {
+        conversationId: conversation._id,
+      } as Message;
+
+      const response = await MessageService.deleteAll(data);
+      if (response.data) {
+        if (!response.data.success) {
+          setNotificationToastMessage(response.data.message, false);
+        }
+      } else {
+        setNotificationFailedWhenGetData();
+      }
+    }   
+
+    async function actionDeleteConversation(conversation) {
+      const data = {
+        _id: conversation._id,
+      } as Conversation;
+
+      const response = await ConversationService.delete(data);
+      if (response.data) {
+        if (response.data.success) {
+          conversationStore.deleteConversation(conversation);
+          actionDeleteAllMessageInConversation(conversation);
+        } else {
+          setNotificationToastMessage(response.data.message, false);
+        }
+      } else {
+        setNotificationFailedWhenGetData();
+      }
+    }
+
     return {
       conversationStore,
       joinConversation,
       moment,
       authStore,
+      actionDeleteConversation,
     };
   },
 };

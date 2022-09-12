@@ -1,5 +1,5 @@
 import {apiClient} from "../http-common";
-import {ConversationData, FindListConversation} from "../types/conversation-type";
+import {ConversationData, FindListConversation, Conversation} from "../types/conversation-type";
 
 class ConversationService {
     findList(data: FindListConversation) {
@@ -8,6 +8,10 @@ class ConversationService {
 
     save(data: ConversationData) {
         return apiClient.post("/conversation/save", data);
+    }
+
+    delete(data: Conversation) {
+        return apiClient.post("/conversation/delete", data);
     }
 }
 

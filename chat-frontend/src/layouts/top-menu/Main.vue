@@ -209,7 +209,7 @@
     <!-- END: Top Bar -->
 
     <!-- BEGIN: Content -->
-    <div class="content content--top-nav">
+    <div class="content content--top-nav">      
       <router-view />
     </div>
     <!-- END: Content -->
@@ -238,9 +238,10 @@ import {
   setNotificationFailedWhenGetData,
   setNotificationToastMessage,
 } from "../../utils/MyFunction";
-
+import { useConversationStore } from '../../stores/conversation-store';
+import ZoomImage from "../../components/ZoomImage.vue"
 export default {
-  components: { DarkModeSwitcher, MobileMenu, MainColorSwitcher },
+  components: { DarkModeSwitcher, MobileMenu, MainColorSwitcher, ZoomImage },
   setup() {
     const route: any = useRoute();
     const router = useRouter();
@@ -248,6 +249,7 @@ export default {
     const topMenuStore = useTopMenuStore();
     const topMenu = computed(() => nestedMenu(topMenuStore.menu, route));
     const authStore = useAuthStore();
+    const conversationStore = useConversationStore();
 
     provide("forceActiveMenu", (pageName) => {
       route.forceActiveMenu = pageName;
@@ -296,6 +298,7 @@ export default {
     return {
       currentUser,
       actionLogout,
+      conversationStore
     };
   },
 };

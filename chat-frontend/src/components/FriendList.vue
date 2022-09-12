@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import SingleFriend from "./SingleFriend.vue";
 import SingleStranger from "./SingleStranger.vue";
 import UserService from "../services/UserService";
@@ -57,6 +57,7 @@ import {
   setNotificationToastMessage,
 } from "../utils/MyFunction";
 import { AlphabetUser, UserInfor } from "../types/user-type";
+import { useConversationStore } from "../stores/conversation-store";
 
 export default {
   name: "FriendList",
@@ -65,6 +66,7 @@ export default {
     const usernameKeyword = ref("");
     const friends = ref<AlphabetUser[]>([]);
     const strangers = ref<UserInfor[]>([]);
+    const conversationStore = useConversationStore();
 
     const friendsResponse = ref<UserInfor[]>([]);
 
@@ -111,7 +113,7 @@ export default {
             return r;
           }, {});
 
-          friends.value = Object.values(data);          
+          friends.value = Object.values(data);
         } else {
           setNotificationToastMessage(response.data.message, false);
         }
@@ -123,6 +125,14 @@ export default {
     onMounted(() => {
       actionFindFriends();
     });
+
+    watch(
+      () => conversationStore.isDeleted,
+      (value: boolean) => {
+        actionFindFriends();
+        conversationStore.deleteConversationDone();
+      }
+    );
 
     return {
       friends,

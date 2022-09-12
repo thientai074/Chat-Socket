@@ -9,12 +9,24 @@ export const useConversationStore: StoreDefinition = defineStore({
         inChatting: false as boolean,
         inZoomPicture: false as boolean,
         imageLink: "" as string,
-        isLoading: false as boolean
+        isLoading: false as boolean,
+        isDeleted: false as boolean,
     }),
     getters: {},
     actions: {
         getListConversations(conversation: Conversation[]) {
             this.conversations = conversation;
+        },
+
+        deleteConversation(conversation: Conversation) {
+            this.conversations = this.conversations.filter((item: Conversation) => item._id !== conversation._id)
+            this.detailConversation = {}
+            this.inChatting = false
+            this.isDeleted = true
+        },
+
+        deleteConversationDone() {
+            this.isDeleted = false
         },
 
         getChatDetail(conversationId: string) {
