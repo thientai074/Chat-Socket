@@ -163,7 +163,7 @@ export default {
         const data = {
           email: userEmail.value,
           password: password.value,
-        } as UserInfor;    
+        } as UserInfor;
 
         if (Cookies.get(env.nameCookie)) {
           authStore.logoutUser();

@@ -11,6 +11,6 @@ export interface IMessage {
     file: any;
     fileName: string;
     skip: number;
-    timeCreated: string;  
-    youtubeThumbnail: string;  
+    timeCreated: string;
+    youtubeThumbnail: string;
 }

@@ -14,8 +14,6 @@ const app = express();
 app.use(cookieParser());
 
 const MONGODB = env.MONGODB;
-
-console.log("env", env.MONGODB)
 const CLIENT_HOST = env.CLIENT_HOST;
 
 const corsOptions = {

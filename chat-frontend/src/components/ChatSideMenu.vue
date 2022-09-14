@@ -15,41 +15,41 @@
           <div class="box px-5 pt-5 pb-5 lg:pb-0 mt-5">
             <div class="relative text-slate-500">
               <input
-                type="text"
-                class="form-control py-3 px-4 border-transparent bg-slate-100 pr-10"
-                placeholder="Search for users..."
-                v-model="usernameKeyword"
-                v-on:keyup="findListConversation"
+                  type="text"
+                  class="form-control py-3 px-4 border-transparent bg-slate-100 pr-10"
+                  placeholder="Search for users..."
+                  v-model="usernameKeyword"
+                  v-on:keyup="findListConversation"
               />
               <SearchIcon
-                class="w-4 h-4 hidden sm:absolute my-auto inset-y-0 mr-3 right-0"
+                  class="w-4 h-4 hidden sm:absolute my-auto inset-y-0 mr-3 right-0"
               />
             </div>
             <div class="overflow-x-auto scrollbar-hidden">
               <div class="flex mt-5">
                 <ActiveUser
-                  v-for="activeUser in activeUsers"
-                  :key="activeUser._id"
-                  :activeUser="activeUser"
+                    v-for="activeUser in activeUsers"
+                    :key="activeUser._id"
+                    :activeUser="activeUser"
                 />
               </div>
             </div>
           </div>
         </div>
         <div
-          id="conversation-list"
-          class="chat__chat-list overflow-y-auto scrollbar-hidden pr-1 pt-1 mt-4"
+            id="conversation-list"
+            class="chat__chat-list overflow-y-auto scrollbar-hidden pr-1 pt-1 mt-4"
         >
           <Conversation
-            :socket="socket"
-            v-for="conversation in conversations"
-            :key="conversation._id"
-            :conversation="conversation"
+              :socket="socket"
+              v-for="conversation in conversations"
+              :key="conversation._id"
+              :conversation="conversation"
           />
         </div>
       </TabPanel>
-      <FriendList />
-      <ChatProfile />
+      <FriendList/>
+      <ChatProfile/>
     </TabPanels>
   </TabGroup>
 </template>
@@ -59,9 +59,9 @@ import ChatProfile from "./ChatProfile.vue";
 import Conversation from "./Conversation.vue";
 import ActiveUser from "./ActiveUser.vue";
 import FriendList from "./FriendList.vue";
-import { onMounted, computed, ref } from "vue";
-import { useConversationStore } from "../stores/conversation-store";
-import { useAuthStore } from "../stores/auth-store";
+import {onMounted, computed, ref} from "vue";
+import {useConversationStore} from "../stores/conversation-store";
+import {useAuthStore} from "../stores/auth-store";
 import UserService from "../services/UserService";
 import {
   setNotificationFailedWhenGetData,
@@ -73,13 +73,13 @@ import {
   UserInfor,
 } from "../types/user-type";
 import ConversationService from "../services/ConversationService";
-import { FindListConversation } from "../types/conversation-type";
+import {FindListConversation} from "../types/conversation-type";
 
 export default {
   name: "ChatSideMenu",
-  components: { ChatProfile, FriendList, ActiveUser, Conversation },
+  components: {ChatProfile, FriendList, ActiveUser, Conversation},
   props: ["socket"],
-  setup(props, context) {
+  setup(props) {
     const activeUsers = ref<UserInfor[]>([]);
     const usernameKeyword = ref("");
     const activeUserArray: any = ref([]);
@@ -147,7 +147,7 @@ export default {
     props.socket.on("get_new_conversation_change", async (data: any) => {
       // Khi có tin nhắn mới Scrool to top of div
       const element: HTMLElement | any = await document.getElementById(
-        "conversation-list"
+          "conversation-list"
       );
       element.scrollTop = 0;
 

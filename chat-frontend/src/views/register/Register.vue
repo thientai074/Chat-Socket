@@ -101,7 +101,7 @@
                   v-model="validate.avatar.$model"
                   class="intro-x login__input form-control py-3 px-4 block mt-4"
                   placeholder="Avatar"
-                  @keydown.enter.exact.prevent="actionRegisterUser"                  
+                  @keydown.enter.exact.prevent="actionRegisterUser"
               />
               <template v-if="validate.avatar.$error">
                 <div

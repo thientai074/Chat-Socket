@@ -14,7 +14,7 @@ interface MessageType extends Document {
     fileName: string;
     dayCreated: string;
     timeCreated: string;
-    youtubeThumbnail: string;  
+    youtubeThumbnail: string;
 }
 
 const MessageSchema = new Schema<MessageType>(

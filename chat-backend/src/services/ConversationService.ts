@@ -1,6 +1,14 @@
 import { Conversation } from "../models/ConversationModel";
-import { IConversation, ISearchConversation } from "../models/Interface/IConversation";
-import { errResponse, okResponse, dataNotFoundResponse, failureResponse } from "../msg/message";
+import {
+  IConversation,
+  ISearchConversation,
+} from "../models/Interface/IConversation";
+import {
+  errResponse,
+  okResponse,
+  dataNotFoundResponse,
+  failureResponse,
+} from "../msg/message";
 import { errorUnknown } from "../utils/myVariables";
 import mongoose from "mongoose";
 
@@ -23,6 +31,7 @@ export const saveConversationServices = async function (
     try {
       const itemCreate = new Conversation({
         members: [verify, receiverId],
+        whoBlock: ""
       });
       await itemCreate.save();
       return okResponse(itemCreate);
@@ -115,6 +124,8 @@ export const findListConversationServices = async function (
             _id: 1,
             members: 1,
             lastMessage: 1,
+            whoBlock: 1,
+            isBlock: 1,
             userDetails: {
               $filter: {
                 input: "$userDetails",
@@ -156,6 +167,8 @@ export const findListConversationServices = async function (
         {
           $project: {
             userObjId: { $toObjectId: "$members" },
+            whoBlock: 1,
+            isBlock: 1,
           },
         },
         {
@@ -175,6 +188,8 @@ export const findListConversationServices = async function (
             messages: 1,
             lastMessage: 1,
             unreadMessage: 1,
+            whoBlock: 1,
+            isBlock: 1,
           },
         },
         {
@@ -192,6 +207,8 @@ export const findListConversationServices = async function (
             _id: 1,
             members: 1,
             lastMessage: 1,
+            whoBlock: 1,
+            isBlock: 1,
             unreadMessage: {
               $filter: {
                 input: "$messages",
@@ -200,7 +217,7 @@ export const findListConversationServices = async function (
               },
             },
           },
-        },    
+        },
         {
           $sort: {
             "lastMessage.createdAt": -1,
@@ -230,15 +247,14 @@ export const findListConversationServices = async function (
 export const deleteConversationServices = async function (data: IConversation) {
   try {
     const itemDelete = await Conversation.findOneAndDelete({
-      _id: new mongoose.Types.ObjectId(data._id)
-    })
+      _id: new mongoose.Types.ObjectId(data._id),
+    });
 
-    if(itemDelete) {
+    if (itemDelete) {
       return okResponse(itemDelete);
     } else {
       return failureResponse();
     }
-
   } catch (e: unknown) {
     let err: string;
     if (e instanceof Error) {
@@ -248,4 +264,62 @@ export const deleteConversationServices = async function (data: IConversation) {
     }
     return errResponse(err);
   }
-}
+};
+
+export const blockConversationServices = async function (
+  verify: string,
+  data: IConversation
+) {
+  try {
+    const itemUpdate = await Conversation.findById({
+      _id: new mongoose.Types.ObjectId(data._id),
+    });
+
+    if (itemUpdate) {
+      itemUpdate.isBlock = true;
+      itemUpdate.whoBlock = verify;
+      await itemUpdate.save();
+      return okResponse(itemUpdate);
+    }
+  } catch (e: unknown) {
+    let err: string;
+    if (e instanceof Error) {
+      err = e.message;
+    } else {
+      err = errorUnknown;
+    }
+    return errResponse(err);
+  }
+};
+
+export const unblockConversationServices = async function (
+  verify: string,
+  data: IConversation
+) {
+  try {
+    const itemUpdate = await Conversation.findById({
+      _id: new mongoose.Types.ObjectId(data._id),
+    });
+
+    if (itemUpdate) {
+      if (itemUpdate.whoBlock === verify) {
+        itemUpdate.isBlock = false;
+        itemUpdate.whoBlock = "";
+        await itemUpdate.save();
+        return okResponse(itemUpdate);
+      } else {
+        return failureResponse();
+      }
+    } else {
+      return failureResponse();
+    }
+  } catch (e: unknown) {
+    let err: string;
+    if (e instanceof Error) {
+      err = e.message;
+    } else {
+      err = errorUnknown;
+    }
+    return errResponse(err);
+  }
+};

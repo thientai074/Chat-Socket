@@ -10,23 +10,12 @@ export const useConversationStore: StoreDefinition = defineStore({
         inZoomPicture: false as boolean,
         imageLink: "" as string,
         isLoading: false as boolean,
-        isDeleted: false as boolean,
     }),
     getters: {},
     actions: {
-        getListConversations(conversation: Conversation[]) {
-            this.conversations = conversation;
-        },
-
-        deleteConversation(conversation: Conversation) {
-            this.conversations = this.conversations.filter((item: Conversation) => item._id !== conversation._id)
-            this.detailConversation = {}
-            this.inChatting = false
-            this.isDeleted = true
-        },
-
-        deleteConversationDone() {
-            this.isDeleted = false
+        getListConversations(conversations: Conversation[]) {
+            this.conversations = conversations;
+            console.log("conversations", this.conversations)
         },
 
         getChatDetail(conversationId: string) {
@@ -40,15 +29,19 @@ export const useConversationStore: StoreDefinition = defineStore({
             this.inZoomPicture = false
         },
 
-        openBiggerImage() {            
+        closeChat() {
+            this.inChatting = false;
+        },
+
+        openBiggerImage() {
             this.inZoomPicture = true;
         },
 
-        closeImage() {          
+        closeImage() {
             this.inZoomPicture = false;
         },
 
-        openLoadingScreen() { 
+        openLoadingScreen() {
             this.isLoading = true
         },
 

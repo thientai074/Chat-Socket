@@ -16,9 +16,3 @@ export const apiClient: AxiosInstance = axios.create({
     // @ts-ignore
     headers: {"Content-Type": "application/json", authorization: cookie},
 });
-
-export const apiMessage = axios.create({
-    baseURL: env.hostServer,
-    // @ts-ignore
-    headers: {'content-type': 'multipart/form-data', authorization: cookie},
-})

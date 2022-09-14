@@ -13,6 +13,14 @@ class ConversationService {
     delete(data: Conversation) {
         return apiClient.post("/conversation/delete", data);
     }
+
+    block(data: Conversation) {
+        return apiClient.post("/conversation/block", data);
+    }
+
+    unblock(data: Conversation) {
+        return apiClient.post("/conversation/unblock", data);
+    }
 }
 
 export default new ConversationService();

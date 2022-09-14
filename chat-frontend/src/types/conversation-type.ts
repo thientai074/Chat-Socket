@@ -6,6 +6,8 @@ export type Conversation = {
     unreadMessage: Message[];
     userDetails: UserInfor[];
     _id: string;
+    isBlock: boolean;
+    whoBlock: string
 };
 
 export type ConversationData = {
