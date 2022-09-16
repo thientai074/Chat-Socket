@@ -124,6 +124,7 @@ export default {
         if (response.data.success) {
           setNotificationToastMessage("Block successfully", true);
           conversationStore.closeChat()
+          props.socket.emit("listen_message_change", {});
         } 
         else {
           setNotificationToastMessage(response.data.message, false);
@@ -141,7 +142,7 @@ export default {
         if (response.data.success) {
           setNotificationToastMessage("Unblock successfully", true);
           conversationStore.closeChat()
-        } 
+          props.socket.emit("listen_message_change", {});        } 
         else {
           setNotificationToastMessage(response.data.message, false);
         }

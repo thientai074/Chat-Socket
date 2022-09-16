@@ -8,6 +8,10 @@ export const env = {
     MONGODB: process.env.MONGODB as string,
     CLIENT_HOST: process.env.CLIENT_HOST as string,
     CHAT_APP: process.env.CHAT_APP as string,
+    dbUserName: process.env.dbUserName as string,
+    dbPassword: process.env.dbPassword as string,
+    dbPort: process.env.dbPort as string,
+    dbHostName: process.env.dbHostName as string,
 };
 
 // Message

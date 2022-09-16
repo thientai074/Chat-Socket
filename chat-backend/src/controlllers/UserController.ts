@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {
     findNotFriendsServices,
     updateUserServices,
+    updateAvatarUserServices,
     removeUserServices,
     findOneUserServices,
     findAllUsersServices,
@@ -137,6 +138,32 @@ export const updateUser = async function (req: Request, res: Response) {
         if (verify) {
             const item = req.body as IUser;
             const itemService = await updateUserServices(verify, item);
+            return res.json(itemService);
+        } else {
+            return errJwtNotVerify(res);
+        }
+    } catch (e: unknown) {
+        let err: string;
+        if (e instanceof Error) {
+            err = e.message;
+        } else {
+            err = errorUnknown;
+        }
+        return response.err(err, res);
+    }
+};
+
+export const updateAvatarUser = async function (req: Request, res: Response) {
+    try {
+        const authorization = req.headers["authorization"];
+        if (!authorization) {
+            return errJwtNotVerify(res);
+        }
+
+        const verify = await authorizationServices(authorization);
+        if (verify) {
+            const item = req.body as IUser;
+            const itemService = await updateAvatarUserServices(verify, item);
             return res.json(itemService);
         } else {
             return errJwtNotVerify(res);

@@ -14,6 +14,10 @@ class UserService {
         return apiClient.post("/user/update", data)
     }
 
+    updateAvatar(data:UserInfor) {
+        return apiClient.post("/user/update-avatar", data)
+    }
+
     findNotFriends(data: UserInfor) {
         return apiClient.post("/user/find-not-friends", data)
     }

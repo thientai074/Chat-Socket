@@ -31,9 +31,11 @@ app.use(
     express.urlencoded({limit: "50mb", extended: true, parameterLimit: 50000})
 );
 
+const url = "mongodb://" + env.dbUserName + ":" + env.dbPassword + "@" + env.dbHostName + ":" + env.dbPort + "/"  + "";
+
 const connectDB = async () => {
     try {
-        await mongoose.connect(MONGODB);
+        await mongoose.connect(url);
     } catch (error) {
         console.log("Ket noi Database that bai !!!");
     }

@@ -8,7 +8,8 @@ import {
     findNotFriends,
     loginUser,
     findFriends,
-    findActiveUser
+    findActiveUser,
+    updateAvatarUser
 } from "../controlllers/UserController";
 
 export const userRoute = function (app: express.Application) {
@@ -17,6 +18,7 @@ export const userRoute = function (app: express.Application) {
     app.route("/api/user/delete").post(removeUser);
     app.route("/api/user/find-all").post(findAllUsers);
     app.route("/api/user/save").post(saveUser);
+    app.route("/api/user/update-avatar").post(updateAvatarUser);
     app.route("/api/user/find-not-friends").post(findNotFriends);
     app.route("/api/user/find-friends").post(findFriends);
     app.route("/api/user/find-active-user").post(findActiveUser);

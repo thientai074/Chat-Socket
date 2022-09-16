@@ -337,7 +337,7 @@
         </div>
       </div>
     </div>
-    <div v-if="!conversationBlock"
+    <div v-if="!conversationStore.detailConversation.isBlock"
         class="pt-4 pb-10 sm:py-4 flex items-center border-t border-slate-200/60 dark:border-darkmode-400"
     >
       <textarea
@@ -3523,6 +3523,7 @@ export default {
 
       const response = await MessageService.findAll(data);
       if (response.data) {
+        console.log("response.data", response.data)
         if (response.data.success) {
           totalMessage.value = response.data?.values[0]?.totalMessage;
           if (skip.value === 0) {
