@@ -15,7 +15,6 @@ export const useConversationStore: StoreDefinition = defineStore({
     actions: {
         getListConversations(conversations: Conversation[]) {
             this.conversations = conversations;
-            console.log("conversations", this.conversations)
         },
 
         getChatDetail(conversationId: string) {

@@ -94,7 +94,7 @@ export default {
         const data = {
           activeUserArray: activeUserArray.value,
         } as FindActiveUser;
-        const response = await UserService.findActiveUser(data);
+        const response = await UserService.findActiveUser(data, authStore.token);
         if (response.data) {
           if (response.data.success) {
             activeUsers.value = response.data.values;
@@ -112,7 +112,7 @@ export default {
         username: usernameKeyword.value,
       } as FindListConversation;
 
-      const response = await ConversationService.findList(data);
+      const response = await ConversationService.findList(data, authStore.token);
       if (response.data) {
         if (response.data.success) {
           conversationStore.getListConversations(response.data.values);

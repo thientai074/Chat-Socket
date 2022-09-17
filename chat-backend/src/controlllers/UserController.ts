@@ -80,9 +80,8 @@ export const findOneUser = async function (req: Request, res: Response) {
 
         const verify = await authorizationServices(authorization);
 
-        if (verify) {
-            const item = req.body as IUser;
-            const itemService = await findOneUserServices(item);
+        if (verify) {            
+            const itemService = await findOneUserServices(verify);
             return res.json(itemService);
         } else {
             return errJwtNotVerify(res);

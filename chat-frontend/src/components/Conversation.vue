@@ -99,7 +99,7 @@ export default {
       const data = {
         conversationId: conversationId,
       } as Message;
-      const response = await MessageService.markRead(data);
+      const response = await MessageService.markRead(data, authStore.token);
 
       if (response.data) {
         if (!response.data.success) {
@@ -142,8 +142,7 @@ export default {
     async function blockConversation(conversation: Conversation) {
       const data = conversation;
 
-      const response = await ConversationService.block(data);
-      console.log("block", response.data);
+      const response = await ConversationService.block(data, authStore.token);
       if (response.data) {
         if (response.data.success) {
           setNotificationToastMessage("Block successfully", true);
@@ -165,7 +164,7 @@ export default {
     async function unblockConversation(conversation: Conversation) {
       const data = conversation;
 
-      const response = await ConversationService.unblock(data);
+      const response = await ConversationService.unblock(data, authStore.token);
       if (response.data) {
         if (response.data.success) {
           setNotificationToastMessage("Unblock successfully", true);

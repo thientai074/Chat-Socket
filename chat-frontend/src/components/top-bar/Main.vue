@@ -78,7 +78,7 @@ export default {
     async function updateTimeActive() {
       const data = {} as UserInfor;
 
-      const response = await UserService.update(data);
+      const response = await UserService.update(data, authStore.token);
       if (response.data) {
         if (!response.data.success) {
           setNotificationToastMessage(response.data.message, false);
@@ -89,8 +89,9 @@ export default {
     }
 
     async function actionLogout() {
+      await updateTimeActive();
       authStore.logoutUser();
-      updateTimeActive()
+      authStore.getToken();
       await router.push("/login");
     }
 

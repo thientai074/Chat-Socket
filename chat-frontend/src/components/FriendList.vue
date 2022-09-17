@@ -57,6 +57,7 @@ import {
   setNotificationToastMessage,
 } from "../utils/MyFunction";
 import {AlphabetUser, UserInfor} from "../types/user-type";
+import { useAuthStore } from '../stores/auth-store';
 
 export default {
   name: "FriendList",
@@ -65,6 +66,7 @@ export default {
     const usernameKeyword = ref("");
     const friends = ref<AlphabetUser[]>([]);
     const strangers = ref<UserInfor[]>([]);
+    const authStore = useAuthStore();
 
     const friendsResponse = ref<UserInfor[]>([]);
 
@@ -73,7 +75,7 @@ export default {
         username: usernameKeyword.value,
       } as UserInfor;
 
-      const response = await UserService.findNotFriends(data);
+      const response = await UserService.findNotFriends(data, authStore.token);
       if (response.data) {
         if (response.data.success) {
           strangers.value = response.data.values;
@@ -87,7 +89,7 @@ export default {
 
     async function actionFindFriends() {
       const data = {} as UserInfor;
-      const response = await UserService.findFriends(data);
+      const response = await UserService.findFriends(data, authStore.token);
 
       if (response.data) {
         if (response.data.success) {

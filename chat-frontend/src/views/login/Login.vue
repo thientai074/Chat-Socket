@@ -179,6 +179,7 @@ export default {
           );
           if (response.data.success) {
             await authStore.loginUser(response.data.values);
+            authStore.getToken()
             await router.push("/");
           }
         } else {

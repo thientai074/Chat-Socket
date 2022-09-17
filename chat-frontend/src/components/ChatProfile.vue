@@ -96,9 +96,8 @@ export default {
       const data = {
         avatar: avatar,
       } as UserInfor;
-      const response = await UserService.updateAvatar(data);
+      const response = await UserService.updateAvatar(data, authStore.token);
       if (response.data) {
-        console.log(response.data);
         if (response.data.success) {
           setNotificationToastMessage("Change avatar successfully", true);
           openInput.value = false;

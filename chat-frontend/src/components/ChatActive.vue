@@ -3495,7 +3495,7 @@ export default {
     async function findListConversation() {
       // conversationStore.openLoadingScreen()
       const data = {} as FindListConversation;
-      const response = await ConversationService.findList(data);
+      const response = await ConversationService.findList(data, authStore.token);
 
       if (response.data) {
         if (response.data.success) {
@@ -3509,7 +3509,7 @@ export default {
     }
 
     async function actionSaveMessage(messageData: any) {
-      const response = await MessageService.save(messageData);
+      const response = await MessageService.save(messageData, authStore.token);
       if (response.data) {
         if (!response.data.success) {
           setNotificationToastMessage(response.data.message, false);
@@ -3529,9 +3529,8 @@ export default {
         skip: skip.value,
       } as Message;
 
-      const response = await MessageService.findAll(data);
+      const response = await MessageService.findAll(data, authStore.token);
       if (response.data) {
-        console.log("response.data", response.data)
         if (response.data.success) {
           totalMessage.value = response.data?.values[0]?.totalMessage;
           if (skip.value === 0) {
@@ -3560,7 +3559,7 @@ export default {
         messageList.value.splice(indexOfMessage, 1);
       }
       const data = message;
-      const response = await MessageService.delete(data);
+      const response = await MessageService.delete(data, authStore.token);
       if (response.data) {
         if (response.data.success) {
           props.socket.emit("listen_message_change", {});
@@ -3584,7 +3583,7 @@ export default {
       const data = {
         conversationId: conversationId,
       } as Message;
-      const response = await MessageService.markRead(data);
+      const response = await MessageService.markRead(data, authStore.token);
 
       if (response.data) {
         if (!response.data.success) {
@@ -3603,7 +3602,7 @@ export default {
     }
 
     async function actionDownloadFile(data: Message) {
-      const response = await MessageService.downloadFile(data);
+      const response = await MessageService.downloadFile(data, authStore.token);
 
       if (response.data) {
         const file = new File([response.data], data.fileName, {

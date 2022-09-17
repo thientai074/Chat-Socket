@@ -32,19 +32,21 @@ import {
 import {useRouter} from "vue-router";
 import {ConversationData} from '../types/conversation-type';
 import ConversationService from '../services/ConversationService';
+import { useAuthStore } from '../stores/auth-store';
 
 export default {
   name: "SingleStranger",
   props: ["stranger"],
   setup() {
     const router = useRouter();
+    const authStore = useAuthStore();
 
     async function actionAddNewConversation(userId: string) {
       const data = {
         receiverId: userId,
       } as ConversationData;
       if (data) {
-        const response = await ConversationService.save(data);
+        const response = await ConversationService.save(data, authStore.token);
         if (response.data) {
           if (!response.data.success) {
             setNotificationToastMessage(response.data.message, false);

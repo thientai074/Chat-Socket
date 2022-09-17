@@ -7,27 +7,31 @@ class UserService {
     }
 
     save(data: UserInfor) {
-        return apiClient.post("/user/save", data)
+        return apiClient('').post("/user/save", data)
     }
 
-    update(data: UserInfor) {
-        return apiClient.post("/user/update", data)
+    findOne(data: UserInfor, token: string) {
+        return apiClient(token).post("/user/find-one", data)
     }
 
-    updateAvatar(data:UserInfor) {
-        return apiClient.post("/user/update-avatar", data)
+    update(data: UserInfor, token: string) {
+        return apiClient(token).post("/user/update", data)
     }
 
-    findNotFriends(data: UserInfor) {
-        return apiClient.post("/user/find-not-friends", data)
+    updateAvatar(data:UserInfor, token: string) {
+        return apiClient(token).post("/user/update-avatar", data)
     }
 
-    findFriends(data: UserInfor) {
-        return apiClient.post("/user/find-friends", data)
+    findNotFriends(data: UserInfor, token: string) {
+        return apiClient(token).post("/user/find-not-friends", data)
     }
 
-    findActiveUser(data: FindActiveUser) {
-        return apiClient.post("/user/find-active-user", data)
+    findFriends(data: UserInfor, token: string) {
+        return apiClient(token).post("/user/find-friends", data)
+    }
+
+    findActiveUser(data: FindActiveUser, token: string) {
+        return apiClient(token).post("/user/find-active-user", data)
     }
 }
 
