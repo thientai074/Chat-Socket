@@ -1,7 +1,7 @@
 <template>
   <!-- BEGIN: Main Color Switcher-->
   <div
-    class="shadow-md fixed bottom-0 left-0 box border rounded-full h-12 px-5 flex items-center justify-center z-50 mb-10 mr-52 bg-[#dfe6ee]"
+    class="hidden shadow-md fixed bottom-0 left-0 box border rounded-full h-12 px-5 flex items-center justify-center z-50 mb-10 mr-52 bg-[#dfe6ee]"
   >
     <div class="mr-4 hidden sm:block text-slate-600 dark:text-slate-200">
       Color Scheme

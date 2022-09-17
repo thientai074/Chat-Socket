@@ -42,6 +42,11 @@ io.on("connection", (socket) => {
     console.log(`User with ID: ${socket.id} joined room: ${conversationId}`);
   });
 
+  socket.on("leave_conversation", (conversationId) => {
+    socket.leave(conversationId);
+    console.log(`User with ID: ${socket.id} leaved room: ${conversationId}`);
+  });
+
   // Listen typing events
   socket.on("start_typing_message", (data) => {
     io.to(data.conversationId).emit("start_typing_message", data);
@@ -50,6 +55,11 @@ io.on("connection", (socket) => {
   socket.on("stop_typing_message", (data) => {
     io.to(data.conversationId).emit("stop_typing_message", data);
   });
+
+  // Listen block, unblock action
+  socket.on("action_block_or_unblock", (data) => {
+    io.to(data.conversationId).emit("receive_action_block_or_unblock")
+  })
 
   // Listen send message
   socket.on("send_message", async (data) => {

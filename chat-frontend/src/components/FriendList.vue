@@ -7,7 +7,7 @@
               type="text"
               class="form-control py-3 px-4 border-transparent bg-slate-100 pr-10"
               placeholder="Search for users..."
-              v-model="usernameKeyword"
+              v-model.trim="usernameKeyword"
               v-on:keyup="actionFindNotFriends"
           />
           <SearchIcon

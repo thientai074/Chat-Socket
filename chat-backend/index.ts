@@ -35,7 +35,7 @@ const url = "mongodb://" + env.dbUserName + ":" + env.dbPassword + "@" + env.dbH
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(url);
+        await mongoose.connect(MONGODB);
     } catch (error) {
         console.log("Ket noi Database that bai !!!");
     }

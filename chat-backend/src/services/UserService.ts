@@ -224,7 +224,7 @@ export const findNotFriendsServices = async function (
           },
         },
         {
-          $match: { username: { $regex: data.username } },
+          $match: { username: { $regex: data.username, $options:"$i" } },
         },
       ];
     }

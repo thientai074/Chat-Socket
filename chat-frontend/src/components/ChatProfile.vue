@@ -49,7 +49,7 @@
             <textarea
               class="mt-1 text-base"
               v-if="openInput === true"
-              v-model="currentUser.avatar"
+              v-model.trim="currentUser.avatar"
               @keydown.enter.exact.prevent="
                 actionChangeAvatar(currentUser.avatar)
               "

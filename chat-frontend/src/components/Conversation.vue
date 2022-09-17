@@ -21,7 +21,13 @@
         <div class="text-xs text-slate-400 ml-16">
           {{ moment(conversation?.lastMessage?.createdAt).format("HH:mm") }}
         </div>
-        <Dropdown v-if="conversation.whoBlock === '' || conversation.whoBlock === authStore.currentUser.userInfor._id" class="hidden sm:block ml-12 my-auto text-red-500">
+        <Dropdown
+          v-if="
+            conversation.whoBlock === '' ||
+            conversation.whoBlock === authStore.currentUser.userInfor._id
+          "
+          class="hidden sm:block ml-12 my-auto text-red-500"
+        >
           <DropdownToggle
             tag="a"
             href="javascript:;"
@@ -31,10 +37,20 @@
           </DropdownToggle>
           <DropdownMenu class="w-40">
             <DropdownContent>
-              <DropdownItem v-if="!conversation.isBlock" @click="blockConversation(conversation)">
-                <LockIcon class="w-4 h-4 mr-2 text-red-500" /> <p class="text-red-500">Block</p>
+              <DropdownItem
+                v-if="!conversation.isBlock"
+                @click="blockConversation(conversation)"
+              >
+                <LockIcon class="w-4 h-4 mr-2 text-red-500" />
+                <p class="text-red-500">Block</p>
               </DropdownItem>
-              <DropdownItem v-if="conversation.whoBlock === authStore.currentUser.userInfor._id && conversation.isBlock" @click="unblockConversation(conversation)">
+              <DropdownItem
+                v-if="
+                  conversation.whoBlock ===
+                    authStore.currentUser.userInfor._id && conversation.isBlock
+                "
+                @click="unblockConversation(conversation)"
+              >
                 <KeyIcon class="w-4 h-4 mr-2" /> Unblock
               </DropdownItem>
             </DropdownContent>
@@ -95,7 +111,15 @@ export default {
     }
 
     async function joinConversation(conversationId: string) {
+      localStorage.setItem("room", conversationId);
+      if (
+        localStorage.getItem("room") &&
+        localStorage.getItem("room") !== conversationId
+      ) {
+        props.socket.emit("leave_conversation", localStorage.getItem("room"));
+      }
       props.socket.emit("join_conversation", conversationId);
+
       conversationStore.openChat();
       // Lấy thông tin cuộc trò chuyện
       await conversationStore.getChatDetail(conversationId);
@@ -119,14 +143,18 @@ export default {
       const data = conversation;
 
       const response = await ConversationService.block(data);
-      console.log("block", response.data)
+      console.log("block", response.data);
       if (response.data) {
         if (response.data.success) {
           setNotificationToastMessage("Block successfully", true);
-          conversationStore.closeChat()
+          conversationStore.closeChat();
+          const blockData = {
+            conversationId: conversation._id,
+            status: "block",
+          };
+          props.socket.emit("action_block_or_unblock", blockData);
           props.socket.emit("listen_message_change", {});
-        } 
-        else {
+        } else {
           setNotificationToastMessage(response.data.message, false);
         }
       } else {
@@ -137,13 +165,18 @@ export default {
     async function unblockConversation(conversation: Conversation) {
       const data = conversation;
 
-      const response = await ConversationService.unblock(data);     
+      const response = await ConversationService.unblock(data);
       if (response.data) {
         if (response.data.success) {
           setNotificationToastMessage("Unblock successfully", true);
-          conversationStore.closeChat()
-          props.socket.emit("listen_message_change", {});        } 
-        else {
+          conversationStore.closeChat();
+          const unblockData = {
+            conversationId: conversation._id,
+            status: "unblock",
+          };
+          props.socket.emit("action_block_or_unblock", unblockData);
+          props.socket.emit("listen_message_change", {});
+        } else {
           setNotificationToastMessage(response.data.message, false);
         }
       } else {
@@ -157,7 +190,7 @@ export default {
       moment,
       authStore,
       blockConversation,
-      unblockConversation
+      unblockConversation,
     };
   },
 };

@@ -134,6 +134,7 @@ export const findListConversationServices = async function (
                   $regexMatch: {
                     input: "$$item.username",
                     regex: data.username,
+                    options: "i"
                   },
                 },
               },

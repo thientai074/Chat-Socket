@@ -52,7 +52,7 @@
                   type="text"
                   class="intro-x login__input form-control py-3 px-4 block"
                   placeholder="Email"
-                  v-model="validate.userEmail.$model"
+                  v-model.trim="validate.userEmail.$model"
               />
               <template v-if="validate.userEmail.$error">
                 <div
@@ -67,7 +67,7 @@
                   type="password"
                   class="intro-x login__input form-control py-3 px-4 block mt-4"
                   placeholder="Password"
-                  v-model="validate.password.$model"
+                  v-model.trim="validate.password.$model"
                   @keydown.enter.exact.prevent="actionLogin"
               />
               <template v-if="validate.password.$error">

@@ -50,7 +50,7 @@
             <div class="intro-x mt-8">
               <input
                   type="text"
-                  v-model="validate.newEmail.$model"
+                  v-model.trim="validate.newEmail.$model"
                   class="intro-x login__input form-control py-3 px-4 block"
                   placeholder="Email"
               />
@@ -68,7 +68,7 @@
                   type="text"
                   class="intro-x login__input form-control py-3 px-4 block mt-4"
                   placeholder="Username"
-                  v-model="validate.username.$model"
+                  v-model.trim="validate.username.$model"
               />
               <template v-if="validate.username.$error">
                 <div
@@ -82,7 +82,7 @@
 
               <input
                   type="password"
-                  v-model="validate.password.$model"
+                  v-model.trim="validate.password.$model"
                   class="intro-x login__input form-control py-3 px-4 block mt-4"
                   placeholder="Password"
               />
@@ -98,7 +98,7 @@
 
               <input
                   type="text"
-                  v-model="validate.avatar.$model"
+                  v-model.trim="validate.avatar.$model"
                   class="intro-x login__input form-control py-3 px-4 block mt-4"
                   placeholder="Avatar"
                   @keydown.enter.exact.prevent="actionRegisterUser"

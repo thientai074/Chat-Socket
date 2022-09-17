@@ -337,7 +337,7 @@
         </div>
       </div>
     </div>
-    <div v-if="!conversationStore.detailConversation.isBlock"
+    <div v-if="!conversationStore.detailConversation.isBlock || conversationBlock === 'unblock' "
         class="pt-4 pb-10 sm:py-4 flex items-center border-t border-slate-200/60 dark:border-darkmode-400"
     >
       <textarea
@@ -3372,7 +3372,7 @@
         <SendIcon class="w-4 h-4"/>
       </a>
     </div>
-    <div v-else  class="pt-4 pb-10 sm:py-4  border-t border-slate-200/60 dark:border-darkmode-400 px-auto bg-blue-400 text-center">
+    <div v-if="conversationStore.detailConversation.isBlock || conversationBlock === 'block'"  class="pt-4 pb-10 sm:py-4  border-t border-slate-200/60 dark:border-darkmode-400 px-auto bg-blue-400 text-center">
       Sorry, you can't reply to this conversation. Learn more
     </div>
   </div>
@@ -3416,7 +3416,8 @@ export default {
     const fileSize = ref("");
     const youtubeLinkThumbnail = ref("");
     const youtubeOption: any = ref({});
-    const conversationBlock = ref(false)
+    const conversationBlock = ref("")
+    const conversationStatus = ref("")
 
     const authStore = useAuthStore();
     const conversationStore = useConversationStore();
@@ -3463,7 +3464,6 @@ export default {
           messageList.value = [];
           skip.value = 0;
           totalMessage.value = 9;
-          conversationBlock.value = detailConversation.isBlock
           await findAllMessagesInConversation(conversationId.value);
           const element: HTMLElement | any = await document.getElementById(
               "message-box"
@@ -3483,6 +3483,14 @@ export default {
           }
         }
     );
+
+    props.socket.on("receive_action_block_or_unblock", (data) => {
+      conversationStatus.value = data.status
+    })
+
+    watch(()=> conversationStatus.value, (value: string) => {
+      conversationBlock.value = value
+    })
 
     async function findListConversation() {
       // conversationStore.openLoadingScreen()
@@ -3832,7 +3840,8 @@ export default {
       findAllMessagesInConversation,
       youtubeLinkThumbnail,
       addSpaceInMessageIfTooLong,
-      conversationBlock
+      conversationBlock,
+      conversationStatus
     };
   },
 };
