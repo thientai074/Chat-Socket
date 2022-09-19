@@ -32,148 +32,9 @@
           </ol>
         </nav>
         <!-- END: Breadcrumb -->
-        <!-- BEGIN: Search -->
-        <!-- <div class="intro-x relative mr-3 sm:mr-6">
-          <div class="search hidden sm:block">
-            <input
-              type="text"
-              class="search__input form-control border-transparent"
-              placeholder="Search..."
-              @focus="showSearchDropdown"
-              @blur="hideSearchDropdown"
-            />
-            <SearchIcon class="search__icon dark:text-slate-500" />
-          </div>
-          <a class="notification notification--light sm:hidden" href="">
-            <SearchIcon class="notification__icon dark:text-slate-500" />
-          </a>
-          <div class="search-result" :class="{ show: searchDropdown }">
-            <div class="search-result__content">
-              <div class="search-result__content__title">Pages</div>
-              <div class="mb-5">
-                <a href="" class="flex items-center">
-                  <div
-                    class="w-8 h-8 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full"
-                  >
-                    <InboxIcon class="w-4 h-4" />
-                  </div>
-                  <div class="ml-3">Mail Settings</div>
-                </a>
-                <a href="" class="flex items-center mt-2">
-                  <div
-                    class="w-8 h-8 bg-pending/10 text-pending flex items-center justify-center rounded-full"
-                  >
-                    <UsersIcon class="w-4 h-4" />
-                  </div>
-                  <div class="ml-3">Users & Permissions</div>
-                </a>
-                <a href="" class="flex items-center mt-2">
-                  <div
-                    class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full"
-                  >
-                    <CreditCardIcon class="w-4 h-4" />
-                  </div>
-                  <div class="ml-3">Transactions Report</div>
-                </a>
-              </div>
-              <div class="search-result__content__title">Users</div>
-              <div class="mb-5">
-                <a
-                  v-for="(faker, fakerKey) in $_.take($f(), 4)"
-                  :key="fakerKey"
-                  href
-                  class="flex items-center mt-2"
-                >
-                  <div class="w-8 h-8 image-fit">
-                    <img
-                      alt="Tinker Tailwind HTML Admin Template"
-                      class="rounded-full"
-                      :src="faker.photos[0]"
-                    />
-                  </div>
-                  <div class="ml-3">{{ faker.users[0].name }}</div>
-                  <div
-                    class="ml-auto w-48 truncate text-slate-500 text-xs text-right"
-                  >
-                    {{ faker.users[0].email }}
-                  </div>
-                </a>
-              </div>
-              <div class="search-result__content__title">Products</div>
-              <a
-                v-for="(faker, fakerKey) in $_.take($f(), 4)"
-                :key="fakerKey"
-                href
-                class="flex items-center mt-2"
-              >
-                <div class="w-8 h-8 image-fit">
-                  <img
-                    alt="Tinker Tailwind HTML Admin Template"
-                    class="rounded-full"
-                    :src="faker.images[0]"
-                  />
-                </div>
-                <div class="ml-3">{{ faker.products[0].name }}</div>
-                <div
-                  class="ml-auto w-48 truncate text-slate-500 text-xs text-right"
-                >
-                  {{ faker.products[0].category }}
-                </div>
-              </a>
-            </div>
-          </div>
-        </div> -->
-        <!-- END: Search -->
-        <!-- BEGIN: Notifications -->
-        <!-- <Dropdown class="intro-x mr-4 sm:mr-6">
-          <DropdownToggle
-            tag="div"
-            role="button"
-            class="notification notification--light notification--bullet cursor-pointer"
-          >
-            <BellIcon class="notification__icon dark:text-slate-500" />
-          </DropdownToggle>
-          <DropdownMenu class="notification-content pt-2">
-            <DropdownContent tag="div" class="notification-content__box">
-              <div class="notification-content__title">Notifications</div>
-              <div
-                v-for="(faker, fakerKey) in $_.take($f(), 5)"
-                :key="fakerKey"
-                class="cursor-pointer relative flex items-center"
-                :class="{ 'mt-5': fakerKey }"
-              >
-                <div class="w-12 h-12 flex-none image-fit mr-1">
-                  <img
-                    alt="Tinker Tailwind HTML Admin Template"
-                    class="rounded-full"
-                    :src="faker.photos[0]"
-                  />
-                  <div
-                    class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white"
-                  ></div>
-                </div>
-                <div class="ml-2 overflow-hidden">
-                  <div class="flex items-center">
-                    <a href="javascript:;" class="font-medium truncate mr-5">{{
-                      faker.users[0].name
-                    }}</a>
-                    <div
-                      class="text-xs text-slate-400 ml-auto whitespace-nowrap"
-                    >
-                      {{ faker.times[0] }}
-                    </div>
-                  </div>
-                  <div class="w-full truncate text-slate-500 mt-0.5">
-                    {{ faker.news[0].shortContent }}
-                  </div>
-                </div>
-              </div>
-            </DropdownContent>
-          </DropdownMenu>
-        </Dropdown> -->
-        <!-- END: Notifications -->
+
         <!-- BEGIN: Account Menu -->
-        <Dropdown class="intro-x w-8 h-8">
+        <Dropdown @click="closeUpdateAvatar" class="intro-x w-8 h-8">
           <DropdownToggle
             tag="div"
             role="button"
@@ -194,10 +55,38 @@
               </DropdownHeader>
               <DropdownDivider class="border-white/[0.08]" />
               <DropdownItem
+                @click="openChangeAvatarInput"
+                class="dropdown-item hover:bg-white/5"
+              >
+                <PenToolIcon class="w-4 h-4 mr-2" />
+                Change Avatar
+              </DropdownItem>
+              <div v-if="openFileInput">
+                <input type="file" @change="uploadAvatar" />
+                <p v-if="uploadAvatarProgress !== 0">
+                  Uploading to {{ uploadAvatarProgress }}%
+                </p>
+                <p v-if="chosenFile && !chosenFile.type.includes('image/')">
+                  This is not image file
+                </p>
+                <button
+                  v-if="
+                    uploadAvatarProgress === 100 &&
+                    chosenFile.type.includes('image/')
+                  "
+                  class="mt-3 hover:text-purple-500"
+                  @click="actionChangeAvatar"
+                >
+                  Change
+                </button>
+              </div>
+              <DropdownDivider class="border-white/[0.08]" />
+
+              <DropdownItem
                 @click="actionLogout"
                 class="dropdown-item hover:bg-white/5"
               >
-                <ToggleRightIcon class="w-4 h-4 mr-2" />
+                <LogOutIcon class="w-4 h-4 mr-2" />
                 Logout
               </DropdownItem>
             </DropdownContent>
@@ -209,7 +98,7 @@
     <!-- END: Top Bar -->
 
     <!-- BEGIN: Content -->
-    <div class="content content--top-nav">      
+    <div class="content content--top-nav">
       <router-view />
     </div>
     <!-- END: Content -->
@@ -238,8 +127,12 @@ import {
   setNotificationFailedWhenGetData,
   setNotificationToastMessage,
 } from "../../utils/MyFunction";
-import { useConversationStore } from '../../stores/conversation-store';
-import ZoomImage from "../../components/ZoomImage.vue"
+import { useConversationStore } from "../../stores/conversation-store";
+import ZoomImage from "../../components/ZoomImage.vue";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../../firebase";
+import { ref as fireBaseRef } from "firebase/storage";
+
 export default {
   components: { DarkModeSwitcher, MobileMenu, MainColorSwitcher, ZoomImage },
   setup() {
@@ -250,6 +143,10 @@ export default {
     const topMenu = computed(() => nestedMenu(topMenuStore.menu, route));
     const authStore = useAuthStore();
     const conversationStore = useConversationStore();
+    const openFileInput = ref(false);
+    const chosenFile: any = ref(null);
+    const newAvatar = ref("");
+    const uploadAvatarProgress = ref(0);
 
     provide("forceActiveMenu", (pageName) => {
       route.forceActiveMenu = pageName;
@@ -276,6 +173,88 @@ export default {
       return authStore.currentUser.userInfor;
     });
 
+    function openChangeAvatarInput() {
+      openFileInput.value = true;
+    }
+
+    function closeUpdateAvatar () {
+      openFileInput.value = false;
+      chosenFile.value = null
+    }
+
+    const uploadFiles = (file) => {
+      //
+      if (!file) return;
+      const sotrageRef = fireBaseRef(storage, `files/${file.name}`);
+      const uploadTask = uploadBytesResumable(sotrageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const prog = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          uploadAvatarProgress.value = prog;
+        },
+        (error) => {
+          setNotificationToastMessage("Can't upload an avatar", false);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            newAvatar.value = downloadURL;           
+          });
+        }
+      );
+    };
+
+    async function uploadAvatar(event) {
+      chosenFile.value = event.target.files[0];
+
+      if (
+        chosenFile.value.name.includes(".jpg") ||
+        chosenFile.value.name.includes(".pdf") ||
+        chosenFile.value.name.includes(".eps") ||
+        chosenFile.value.name.includes(".ai") ||
+        chosenFile.value.name.includes(".webp") ||
+        chosenFile.value.name.includes(".indd") ||
+        chosenFile.value.name.includes(".raw") ||
+        chosenFile.value.name.includes(".jpeg") ||
+        chosenFile.value.name.includes(".psd") ||
+        chosenFile.value.name.includes(".png") ||
+        chosenFile.value.name.includes(".gif") ||
+        chosenFile.value.name.includes(".tiff") ||
+        chosenFile.value.name.includes(".bmp") ||
+        chosenFile.value.name.includes(".jfif")
+      ) {
+        uploadFiles(chosenFile.value);
+      } else {
+        newAvatar.value = "";
+      }
+    }
+
+    async function actionChangeAvatar() {
+      if (newAvatar.value !== "") {
+        const data = {
+          avatar: newAvatar.value,
+        } as UserInfor;
+
+        const response = await UserService.updateAvatar(data, authStore.token);
+        if (response.data) {
+          if (response.data.success) {
+            setNotificationToastMessage("Change avatar successfully", true);
+            authStore.changeAvatar(newAvatar.value);
+            openFileInput.value = false;
+            chosenFile.value = null;
+            uploadAvatarProgress.value = 0;
+          } else {
+            setNotificationToastMessage(response.data.message, false);
+          }
+        } else {
+          setNotificationFailedWhenGetData();
+        }
+      }
+    }
+
     async function updateTimeActive() {
       const data = {} as UserInfor;
 
@@ -298,7 +277,14 @@ export default {
     return {
       currentUser,
       actionLogout,
-      conversationStore
+      conversationStore,
+      openChangeAvatarInput,
+      openFileInput,
+      uploadAvatar,
+      actionChangeAvatar,
+      uploadAvatarProgress,
+      chosenFile,
+      closeUpdateAvatar
     };
   },
 };

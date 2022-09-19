@@ -16,7 +16,7 @@ const io = new Server(server, {
   },
 });
 
-console.log("env", process.env.CLIENT_HOST)
+console.log("env", process.env.CLIENT_HOST);
 
 let users = [];
 
@@ -42,14 +42,10 @@ io.on("connection", (socket) => {
     console.log(`User with ID: ${socket.id} joined room: ${conversationId}`);
   });
 
-  socket.on("leave_conversation", (conversationId) => {
-    socket.leave(conversationId);
-    console.log(`User with ID: ${socket.id} leaved room: ${conversationId}`);
-  });
-
   // Listen typing events
   socket.on("start_typing_message", (data) => {
     io.to(data.conversationId).emit("start_typing_message", data);
+    console.log(`start_typing_messag ${data.conversationId}`);
   });
 
   socket.on("stop_typing_message", (data) => {
@@ -58,18 +54,23 @@ io.on("connection", (socket) => {
 
   // Listen block, unblock action
   socket.on("action_block_or_unblock", (data) => {
-    io.to(data.conversationId).emit("receive_action_block_or_unblock")
-  })
+    io.to(data.conversationId).emit("receive_action_block_or_unblock");
+  });
 
   // Listen send message
   socket.on("send_message", async (data) => {
-    console.log("data", data)
+    console.log("data", data);
     io.to(data.conversationId).emit("receive_message", data);
-  }); 
+  });
 
   // Listen alert new message in conversation
   socket.on("listen_message_change", (data) => {
     io.emit("get_new_conversation_change", data);
+  });
+
+  socket.on("leave_conversation", (conversationId) => {
+    socket.leave(conversationId);
+    console.log(`User with ID: ${socket.id} leaved room: ${conversationId}`);
   });
 
   // Listen disconnect

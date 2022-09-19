@@ -39,6 +39,10 @@ export const useAuthStore: StoreDefinition = defineStore({
     findActiveUser(activeUserArray: string[]) {
       this.activeUser = activeUserArray;
     },
+
+    changeAvatar(avatar: string) {
+      this.currentUser.userInfor.avatar = avatar;
+    },
   },
   persist: {
     enabled: true,

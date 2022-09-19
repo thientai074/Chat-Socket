@@ -29,7 +29,7 @@
         class="overflow-y-scroll px-5 pt-5 flex-1"
         @scroll="handleScroll"
     >
-      <div v-for="(message, index) in messageList" :key="message._id">
+      <div v-for="(message, index) in messageList" :key="message._id" >
         <div
             v-if="index === 0"
             class="text-slate-400 dark:text-slate-500 text-xs text-center mb-10 mt-5"
@@ -313,7 +313,7 @@
       </div>
       <div class="clear-both"></div>
       <div
-          v-if="isTyping"
+          v-if="isTyping "
           class="chat__box__text-box flex items-end float-left mb-4"
       >
         <div
@@ -3422,6 +3422,7 @@ export default {
     const authStore = useAuthStore();
     const conversationStore = useConversationStore();
     const user = authStore.currentUser.userInfor;
+    const conversationRoom = localStorage.getItem('room')
 
     const previewFiles = async (event) => {
       let fileToUpload = event.target.files[0];
@@ -3463,6 +3464,7 @@ export default {
           receiver.value = await detailConversation.userDetails[0];
           messageList.value = [];
           skip.value = 0;
+          isTyping.value = false;
           totalMessage.value = 9;
           await findAllMessagesInConversation(conversationId.value);
           const element: HTMLElement | any = await document.getElementById(
@@ -3840,7 +3842,8 @@ export default {
       youtubeLinkThumbnail,
       addSpaceInMessageIfTooLong,
       conversationBlock,
-      conversationStatus
+      conversationStatus,
+      conversationRoom
     };
   },
 };

@@ -110,16 +110,17 @@ export default {
       }
     }
 
-    async function joinConversation(conversationId: string) {
-      localStorage.setItem("room", conversationId);
+    async function joinConversation(conversationId: string) { 
       if (
-        localStorage.getItem("room") &&
+        localStorage.getItem("room") 
+        &&
         localStorage.getItem("room") !== conversationId
       ) {
         props.socket.emit("leave_conversation", localStorage.getItem("room"));
       }
+      
       props.socket.emit("join_conversation", conversationId);
-
+      localStorage.setItem("room", conversationId);
       conversationStore.openChat();
       // Lấy thông tin cuộc trò chuyện
       await conversationStore.getChatDetail(conversationId);
