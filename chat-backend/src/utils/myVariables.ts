@@ -12,6 +12,7 @@ export const env = {
     dbPassword: process.env.dbPassword as string,
     dbPort: process.env.dbPort as string,
     dbHostName: process.env.dbHostName as string,
+    dbName: process.env.dbName as string,
 };
 
 // Message

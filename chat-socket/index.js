@@ -16,8 +16,6 @@ const io = new Server(server, {
   },
 });
 
-console.log("env", process.env.CLIENT_HOST);
-
 let users = [];
 
 const addUser = (userId, socketId) => {
@@ -45,7 +43,6 @@ io.on("connection", (socket) => {
   // Listen typing events
   socket.on("start_typing_message", (data) => {
     io.to(data.conversationId).emit("start_typing_message", data);
-    console.log(`start_typing_messag ${data.conversationId}`);
   });
 
   socket.on("stop_typing_message", (data) => {
@@ -59,7 +56,6 @@ io.on("connection", (socket) => {
 
   // Listen send message
   socket.on("send_message", async (data) => {
-    console.log("data", data);
     io.to(data.conversationId).emit("receive_message", data);
   });
 

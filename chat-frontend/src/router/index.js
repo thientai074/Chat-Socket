@@ -60,8 +60,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
     await authStore.getToken();
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
-        const authStore = useAuthStore();
+    if (to.matched.some((record) => record.meta.requiresAuth)) {      
         if (Cookies.get(env.nameCookie) && authStore.isAuthenticated) {
             next();
         } else {

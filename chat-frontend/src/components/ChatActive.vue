@@ -158,11 +158,11 @@
                 @click="actionDownloadFile(message)"
             >
               <FolderIcon class="w-6 h-6 mr-2 cursor-pointer"/>
-              {{ message.fileName }} {{ message.fileSize }} Byte
+              {{ message.fileName }}
             </div>
-
-            <div class="mt-1 text-xs text-slate-500">
-              {{ moment(message.createdAt).format("H:mm") }}
+            <div class="mt-1 text-xs text-slate-500 flex justify-between">
+              <p>{{ moment(message.createdAt).format("H:mm") }}</p>
+              <p>{{ message.fileSize }}</p>
             </div>
           </div>
         </div>
