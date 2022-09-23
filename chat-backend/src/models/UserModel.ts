@@ -12,7 +12,7 @@ interface UserType extends Document {
 
 const UserSchema = new Schema<UserType>(
     {
-        username: {type: String, minLength: 5, required: true},
+        username: {type: String, minLength: 5, required: true, unique: true},
         email: {
             type: String,
             minLength: 5,

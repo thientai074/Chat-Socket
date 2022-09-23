@@ -15,18 +15,26 @@ export const saveUserServices = async function (data: IUser): Promise<any> {
     if (exitedUser) {
       return errResponse("This email already exists");
     }
-    const salt = await bcrypt.genSalt(10);
-    const hashed = await bcrypt.hash(data.password, salt);
 
-    const itemCreate = await new User({
-      username: data.username,
-      email: data.email,
-      password: hashed,
-      avatar: data.avatar,
-    });
+    const exitedAnotherUser = await User.findOne({ username: data.username });
+    if (exitedAnotherUser) {
+      return errResponse("This username already exists");
+    }
 
-    await itemCreate.save();
-    return okResponse(itemCreate);
+    if (!exitedUser && !exitedAnotherUser) {
+      const salt = await bcrypt.genSalt(10);
+      const hashed = await bcrypt.hash(data.password, salt);
+
+      const itemCreate = await new User({
+        username: data.username,
+        email: data.email,
+        password: hashed,
+        avatar: data.avatar,
+      });
+
+      await itemCreate.save();
+      return okResponse(itemCreate);
+    }
   } catch (e: unknown) {
     let err: string;
     if (e instanceof Error) {
@@ -224,7 +232,7 @@ export const findNotFriendsServices = async function (
           },
         },
         {
-          $match: { username: { $regex: data.username, $options:"$i" } },
+          $match: { username: { $regex: data.username, $options: "$i" } },
         },
       ];
     }

@@ -37,7 +37,7 @@ mongoose.set('autoCreate', true);
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(MONGODB);
+        await mongoose.connect(url);
     } catch (error) {
         console.log("Ket noi Database that bai !!!");
     }
